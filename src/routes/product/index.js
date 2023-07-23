@@ -1,0 +1,15 @@
+'use strict'
+
+const express = require('express')
+const router = express.Router()
+const productController = require('../../controllers/product.controller')
+const { asyncHandler } = require('../../auth/checkAuth')
+const { authentication, authenticationV2 } = require('../../auth/authUtils')
+
+// authentication middleware
+router.use(authenticationV2)
+
+// create new product
+router.post('', asyncHandler( productController.createProduct ))
+
+module.exports = router
