@@ -1,6 +1,6 @@
 'use strict'
 
-const { product, electronic, clothing } = require('../models/product.model')
+const { product, electronic, clothing, furniture } = require('../models/product.model')
 const { AuthFailureError, NotFoundError, BabRequestError } = require('../core/error.response')
 
 // define Factory class to create a product (FACTORY DESIGN METHOD)
@@ -10,15 +10,18 @@ class ProductFactory {
         payload 
     */
 
+    static productRegistry = {} // key: class
+
+    static registerProductType (type, classRef) {
+        ProductFactory.productRegistry[type] = classRef
+    }
+
     static async createProduct (type, payload) {
-        switch (type) {
-            case 'Electronics': 
-                return new Electronic(payload).createProduct()
-            case 'Clothing': 
-                return new Clothing(payload).createProduct()
-            default: 
-                throw new BabRequestError(`Invalid product type ${type}`)
-        }
+        const productClass = ProductFactory.productRegistry[type]
+
+        if (!productClass) throw new BabRequestError(`Invalid product type ${type}`)
+
+        return new productClass(payload).createProduct()
     }
 
 }
@@ -61,7 +64,7 @@ class Clothing extends Product {
 }
 
 // define sub-class for product type = electronics
-class Electronic extends Product {
+class Electronics extends Product {
     // override method
     async createProduct () {
         const newElectronic = await electronic.create({
@@ -76,5 +79,28 @@ class Electronic extends Product {
         return newProduct
     }
 }
+
+// define sub-class for product type = furniture
+class Furniture extends Product {
+    // override method
+    async createProduct () {
+        const newFurniture = await furniture.create({
+            ...this.product_attributes,
+            product_shop: this.product_shop
+        })
+        if (!newFurniture) throw new BabRequestError('Create new Clothing error')
+
+        const newProduct = await super.createProduct(newFurniture._id)
+        if (!newProduct) throw new BabRequestError('Create new Product error')
+
+        return newProduct
+    }
+}
+
+// register product types
+ProductFactory.registerProductType('Electronics', Electronics)
+ProductFactory.registerProductType('Clothing', Clothing)
+ProductFactory.registerProductType('Furniture', Furniture)
+// ProductFactory.registerProductTypes('Furniture', Furniture)  => add another model
 
 module.exports = ProductFactory
