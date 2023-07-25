@@ -1,14 +1,14 @@
 'use strict'
 
-const StatusCode = {
-    FORBIDDEN: 403,
-    CONFLICT: 409
-}
+// const StatusCode = {
+//     FORBIDDEN: 403,
+//     CONFLICT: 409
+// }
 
-const ReasonStatusCode = {
-    FORBIDDEN: 'Bad request error',
-    CONFLICT: 'Conflict error'
-}
+// const ReasonStatusCode = {
+//     FORBIDDEN: 'Bad request error',
+//     CONFLICT: 'Conflict error'
+// }
 
 const {
     StatusCodes,
@@ -28,14 +28,14 @@ class ErrorResponse extends Error {
 
 // conflict error
 class ConflictRequestError extends ErrorResponse {
-    constructor (message = ReasonStatusCode.CONFLICT, statusCode = StatusCode.CONFLICT) {
+    constructor (message = ReasonPhrases.CONFLICT, statusCode = StatusCodes.CONFLICT) {
         super(message, statusCode)
     }
 }
 
 // bad request error
 class BabRequestError extends ErrorResponse {
-    constructor (message = ReasonStatusCode.FORBIDDEN, statusCode = StatusCode.FORBIDDEN) {
+    constructor (message = ReasonPhrases.BAD_REQUEST, statusCode = StatusCodes.BAD_REQUEST) {
         super(message, statusCode)
     }
 }
