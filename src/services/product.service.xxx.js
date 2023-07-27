@@ -2,14 +2,12 @@
 
 const { product, electronic, clothing, furniture } = require('../models/product.model')
 const { AuthFailureError, NotFoundError, BabRequestError } = require('../core/error.response')
+const { findAllDraftsForShop } = require('../models/repositories/product.repo')
 
 // define Factory class to create a product (FACTORY DESIGN METHOD)
 class ProductFactory {
-    /*
-        type: 'Clothing',
-        payload 
-    */
-
+    
+    // add product
     static productRegistry = {} // key: class
 
     static registerProductType (type, classRef) {
@@ -22,6 +20,12 @@ class ProductFactory {
         if (!productClass) throw new BabRequestError(`Invalid product type ${type}`)
 
         return new productClass(payload).createProduct()
+    }
+
+    // query product
+    static async findAllDraftsForShop ({ product_shop, limit = 50, skip = 0 }) {
+        const query = { product_shop, isDraft: true }
+        return await findAllDraftsForShop({ query, limit, skip })
     }
 
 }
