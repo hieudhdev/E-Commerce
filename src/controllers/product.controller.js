@@ -7,7 +7,6 @@ const { SuccessResponse, OK, CREATED } = require("../core/success.response")
 class ProductController {
 
     createProduct = async (req, res, next) => {
-
         // new SuccessResponse({
         //     message: "Create new product success",
         //     metadata: await ProductService.createProduct(req.body.product_type, {
@@ -17,13 +16,22 @@ class ProductController {
         // }).send(res)
 
         new SuccessResponse({
-            message: "Create new product success",
+            message: "Create new product success!",
             metadata: await ProductServiceV2.createProduct(req.body.product_type, {
                 ...req.body,
                 product_shop: req.user.userId
             })
         }).send(res)
+    }
 
+    publishProductByShop = async (req, res, next) => {
+        new SuccessResponse({
+            message: "Publish a product success!",
+            metadata: await ProductServiceV2.publishProductByShop({
+                product_shop: req.user.userId,
+                product_id: req.params.id
+            })
+        }).send(res)
     }
 
     /**
@@ -36,6 +44,15 @@ class ProductController {
         new SuccessResponse({
             message: "Get list drafts product success!",
             metadata: await ProductServiceV2.findAllDraftsForShop({
+                product_shop: req.user.userId
+            })
+        }).send(res)
+    }
+
+    getAllPublishForShop = async (req, res, next) => {
+        new SuccessResponse({
+            message: "Get list publish product success!",
+            metadata: await ProductServiceV2.findAllPublishForShop({
                 product_shop: req.user.userId
             })
         }).send(res)
