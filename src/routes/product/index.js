@@ -6,6 +6,9 @@ const productController = require('../../controllers/product.controller')
 const { asyncHandler } = require('../../auth/checkAuth')
 const { authentication, authenticationV2 } = require('../../auth/authUtils')
 
+// search publish product
+router.get('/search/:keySearch', asyncHandler( productController.getListSearchProduct ))
+
 // authentication middleware
 router.use(authenticationV2)
 
