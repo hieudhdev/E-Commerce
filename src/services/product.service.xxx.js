@@ -4,14 +4,15 @@ const { product, electronic, clothing, furniture } = require('../models/product.
 const { AuthFailureError, NotFoundError, BabRequestError } = require('../core/error.response')
 const { 
     findAllDraftsForShop, 
+    findAllPublishForShop,
     publishProductByShop,
-    findAllPublishForShop
+    unPublishProductByShop
 } = require('../models/repositories/product.repo')
 
 // define Factory class to create a product (FACTORY DESIGN METHOD)
 class ProductFactory {
     
-    // add product
+    // CREATE
     static productRegistry = {} // key: class
 
     static registerProductType (type, classRef) {
@@ -26,13 +27,17 @@ class ProductFactory {
         return new productClass(payload).createProduct()
     }
 
-    // PUT publish product
+    // PUT 
     static async publishProductByShop ({ product_shop, product_id }) {
         return await publishProductByShop({ product_shop, product_id })
     }
+
+    static async unPublishProductByShop ({ product_shop, product_id }) {
+        return await unPublishProductByShop({ product_shop, product_id })
+    }
     // END PUT
 
-    // QUERY product
+    // QUERY
     static async findAllDraftsForShop ({ product_shop, limit = 50, skip = 0 }) {
         const query = { product_shop, isDraft: true }
         return await findAllDraftsForShop({ query, limit, skip })
