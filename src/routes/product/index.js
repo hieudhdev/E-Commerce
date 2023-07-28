@@ -6,9 +6,9 @@ const productController = require('../../controllers/product.controller')
 const { asyncHandler } = require('../../auth/checkAuth')
 const { authentication, authenticationV2 } = require('../../auth/authUtils')
 
-// service for all roles
+// service for all users
 router.get('/search/:keySearch', asyncHandler( productController.getListSearchProduct ))
-router.get('', asyncHandler( productController.findAllProducts ))
+router.get('/:product_id', asyncHandler( productController.findProduct ))
 
 // authentication middleware
 router.use(authenticationV2)

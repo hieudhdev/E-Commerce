@@ -8,7 +8,8 @@ const {
     publishProductByShop,
     unPublishProductByShop,
     searchProductByUser,
-    findAllProducts
+    findAllProducts,
+    findProduct
 } = require('../models/repositories/product.repo')
 
 // define Factory class to create a product (FACTORY DESIGN METHOD)
@@ -71,8 +72,8 @@ class ProductFactory {
         })
     }
 
-    static async findProduct ({  }) {
-        return await findProduct({ })
+    static async findProduct ({ product_id }) {
+        return await findProduct({ product_id, unSelect: ['__v'] })
     }
     // END QUERY
 }
