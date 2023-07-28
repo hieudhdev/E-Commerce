@@ -7,7 +7,8 @@ const {
     findAllPublishForShop,
     publishProductByShop,
     unPublishProductByShop,
-    searchProductByUser
+    searchProductByUser,
+    findAllProducts
 } = require('../models/repositories/product.repo')
 
 // define Factory class to create a product (FACTORY DESIGN METHOD)
@@ -21,6 +22,15 @@ class ProductFactory {
     }
 
     static async createProduct (type, payload) {
+        const productClass = ProductFactory.productRegistry[type]
+
+        if (!productClass) throw new BabRequestError(`Invalid product type ${type}`)
+
+        return new productClass(payload).createProduct()
+    }
+
+    // UPDATE
+    static async updateProduct (type, payload) {
         const productClass = ProductFactory.productRegistry[type]
 
         if (!productClass) throw new BabRequestError(`Invalid product type ${type}`)
@@ -51,6 +61,18 @@ class ProductFactory {
 
     static async searchProducts ({ keySearch }) {
         return await searchProductByUser({ keySearch })
+    }
+
+    // find products for homePage
+    static async findAllProducts ({ limit = 50, sort = 'ctime', page = 1, filter = { isPublished: true } }) {
+        return await findAllProducts({ 
+            limit, sort, page, filter,
+            select: ['product_name', 'product_price', 'product_thumb'] 
+        })
+    }
+
+    static async findProduct ({  }) {
+        return await findProduct({ })
     }
     // END QUERY
 }

@@ -6,13 +6,14 @@ const productController = require('../../controllers/product.controller')
 const { asyncHandler } = require('../../auth/checkAuth')
 const { authentication, authenticationV2 } = require('../../auth/authUtils')
 
-// search publish product
+// service for all roles
 router.get('/search/:keySearch', asyncHandler( productController.getListSearchProduct ))
+router.get('', asyncHandler( productController.findAllProducts ))
 
 // authentication middleware
 router.use(authenticationV2)
 
-// create new product
+// service for shop
 router.post('', asyncHandler( productController.createProduct ))
 router.post('/publish/:id', asyncHandler( productController.publishProductByShop ))
 router.post('/unpublish/:id', asyncHandler( productController.unPublishProductByShop ))
