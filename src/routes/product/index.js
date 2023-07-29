@@ -15,6 +15,7 @@ router.use(authenticationV2)
 
 // service for shop
 router.post('', asyncHandler( productController.createProduct ))
+router.patch('/:productId', asyncHandler( productController.updateProductByShop ))
 router.post('/publish/:id', asyncHandler( productController.publishProductByShop ))
 router.post('/unpublish/:id', asyncHandler( productController.unPublishProductByShop ))
 
