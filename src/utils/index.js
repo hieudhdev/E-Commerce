@@ -28,7 +28,7 @@ const removeUndefinedObject = obj => {
 }
 
 /*
-    Handle obj nested, which has value of key is null or undefine
+    Handle obj nested for update product
     const a = {
         b: {
             c: 1,
