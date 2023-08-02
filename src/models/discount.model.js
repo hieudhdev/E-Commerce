@@ -18,7 +18,7 @@ const discountSchema = new Schema({
     /* 
         discount_users_used không phải để lưu user đã sử dụng. 
         Mà khi user add discount vào khi chuẩn bị thanh toán thôi.
-        ---- not quite understand ?? -----
+        Nếu user cancel discount thì loại ra khỏi collections
     */
     discount_users_used: { type: Array, default: [] }, 
     discount_max_uses_per_user: { type: Number, required: true }, // maximum number of uses for an user
