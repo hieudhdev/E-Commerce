@@ -195,6 +195,7 @@ class DiscountService {
         }
     }
 
+    // delete dicount code [Shop]
     static async deleteDiscountCode ({ shopId, codeId }) {
         const deleted = await discount.findOneAndDelete({ 
             discount_code: codeId,
@@ -204,4 +205,31 @@ class DiscountService {
         return deleted
     }
 
+    // cancel discount code [User]
+    static async cancelDiscountCode ({ codeId, shopId, userId }) {
+        const foundDiscount = await checkDiscountExists({
+            model: discount,
+            filter: {
+                discount_code: codeId,
+                discount_shopId: convertToObjectId(shopId)
+            }
+        })
+
+        if (!foundDiscount) throw new NotFoundError(`Discount doesn't exists`)
+
+        const result = await discount.findByIdAndUpdate(foundDiscount._id, {
+            $pull: {
+                discount_users_used: userId
+            },
+            $inc: {
+                discount_max_uses: 1,
+                discount_uses_count: -1
+            }
+        })
+
+        return result
+    }
+
 }
+
+module.exports = DiscountService
