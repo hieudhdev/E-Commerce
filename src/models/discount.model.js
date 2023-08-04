@@ -32,4 +32,4 @@ const discountSchema = new Schema({
     collection: COLLECTION_NAME
 })
 
-module.exports = model(DOCUMENT_NAME, DiscountSchema)
+module.exports = model(DOCUMENT_NAME, discountSchema)
