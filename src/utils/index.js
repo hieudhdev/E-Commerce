@@ -5,7 +5,7 @@ const { Types } = require('mongoose')
 
 // convert id from client to ObjectId
 const convertToObjectId = (id) => {
-    Types.ObjectId(id)
+    return new Types.ObjectId(id)
 }
 
 // get specific field of a document
