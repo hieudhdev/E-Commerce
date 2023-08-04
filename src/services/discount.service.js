@@ -30,13 +30,13 @@ class DiscountService {
             code, start_date, end_date, is_active,
             shopId, min_order_value, product_ids, applies_to,
             name, description, type, value, max_value, max_uses,
-            uses_count, max_uses_per_user
+            uses_count, max_uses_per_user, users_used
         } = payload
 
         // check date - validate input request 
-        if (new Date() < new Date(start_date) || new Date() > new Date(end_date)) {
-            throw new BabRequestError('Discount code has expried')
-        }
+        // if (new Date() < new Date(start_date) || new Date() > new Date(end_date)) {
+        //     throw new BabRequestError('Discount code has expried')
+        // }
         if (new Date(start_date) >= new Date(end_date)) {
             throw new BabRequestError('Start date must be before end date')
         }
@@ -91,6 +91,8 @@ class DiscountService {
         }
 
         const { discount_applies_to, discount_product_ids } = foundDiscount
+
+        let products = {}
         if (discount_applies_to === 'all') {
             products = await findAllProducts({
                 filter: { 
@@ -144,7 +146,7 @@ class DiscountService {
             model: discount,
             filter: {
                 discount_code: code,
-                shopId: convertToObjectId(shopId)
+                discount_shopId: convertToObjectId(shopId)
             }
         })
 
@@ -162,9 +164,10 @@ class DiscountService {
 
         if (!discount_is_active) throw new NotFoundError('Discount expried')
         if (!discount_max_uses) throw new NotFoundError('Discount is out')
-        if (new Date() < new Date(discount_start_date) || new Date() > new Date(discount_end_date)) {
-            throw new NotFoundError('Discount has expired')
-        }
+        // if (new Date() < new Date(discount_start_date) || new Date() > new Date(discount_end_date)) {
+        //     throw new NotFoundError('Discount has expired')
+        // }
+
         // check minimum price to get discount
         let totalOrder = 0
         if (discount_min_order_value > 0) {
@@ -173,7 +176,7 @@ class DiscountService {
             }, 0)
 
             if (totalOrder < discount_min_order_value) {
-                throw new NotFoundError('Discount require a minimum price of an order')
+                throw new NotFoundError(`Discount require a minimum price of an order: ${discount_min_order_value}`)
             }
         }
 
@@ -190,15 +193,15 @@ class DiscountService {
 
         return {
             totalOrder,
-            amount,
+            discount: amount,
             totalPrice: totalOrder - amount
         }
     }
 
     // delete dicount code [Shop]
-    static async deleteDiscountCode ({ shopId, codeId }) {
+    static async deleteDiscountCode ({ shopId, code }) {
         const deleted = await discount.findOneAndDelete({ 
-            discount_code: codeId,
+            discount_code: code,
             discount_shopId: convertToObjectId(shopId)
         })
 
@@ -206,11 +209,11 @@ class DiscountService {
     }
 
     // cancel discount code [User]
-    static async cancelDiscountCode ({ codeId, shopId, userId }) {
+    static async cancelDiscountCode ({ code, shopId, userId }) {
         const foundDiscount = await checkDiscountExists({
             model: discount,
             filter: {
-                discount_code: codeId,
+                discount_code: code,
                 discount_shopId: convertToObjectId(shopId)
             }
         })
