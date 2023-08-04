@@ -9,7 +9,8 @@ const { convertToObjectId } = require('../utils/index')
 const { findAllProducts } = require('../models/repositories/product.repo')
 const { 
     findAllDiscountCodesSelect,
-    findAllDiscountCodesUnSelect
+    findAllDiscountCodesUnSelect,
+    checkDiscountExists
 } = require('../models/repositories/discount.repo')
 
 /*
@@ -134,5 +135,66 @@ class DiscountService {
 
         return discounts
     }
+
+    /*
+        Apply discount code
+    */
+    static async getDiscountAmount ({ code, userId, shopId, products }) {
+        const foundDiscount = await checkDiscountExists({
+            model: discount,
+            filter: {
+                discount_code: code,
+                shopId: convertToObjectId(shopId)
+            }
+        })
+
+        if (!foundDiscount) throw new NotFoundError('Discount not exists')
+
+        const { 
+            discount_is_active,
+            discount_max_uses,   // uses remaining
+            discount_min_order_value,
+            discount_max_uses_per_user, // uses remaining
+            discount_users_used,
+            discount_value,
+            discount_type
+        } = foundDiscount    // destructuring ES6
+
+        if (!discount_is_active) throw new NotFoundError('Discount expried')
+        if (!discount_max_uses) throw new NotFoundError('Discount is out')
+        if (new Date() < new Date(discount_start_date) || new Date() > new Date(discount_end_date)) {
+            throw new NotFoundError('Discount has expired')
+        }
+        // check minimum price to get discount
+        let totalOrder = 0
+        if (discount_min_order_value > 0) {
+            totalOrder = products.reduce( (total, product) => {
+                return total + (product.price * product.quantity)
+            }, 0)
+
+            if (totalOrder < discount_min_order_value) {
+                throw new NotFoundError('Discount require a minimum price of an order')
+            }
+        }
+
+        // check max uses for per user
+        if (discount_max_uses_per_user > 0) {
+            const userUserDiscount = discount_users_used.find( user => user.userId === userId )
+            if (userUserDiscount) {
+                // .....
+            }
+        }
+
+        // check discount amount or percent
+        const amount = discount_type === 'fixed_amount' ? discount_value : totalOrder * (discount_value / 100)
+
+        return {
+            totalOrder,
+            amount,
+            totalPrice: totalOrder - amount
+        }
+    }
+
+    
 
 }
