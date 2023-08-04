@@ -13,7 +13,7 @@ const discountSchema = new Schema({
     discount_code: { type: String, required: true }, 
     discount_start_date: { type: Date, required: true },
     discount_end_date: { type: Date, required: true },
-    discount_max_uses: { type: Number, required: true },    // maximum number of uses
+    discount_max_uses: { type: Number, required: true },    // maximum number of uses (uses remaining)
     discount_uses_count: { type: Number, required: true },   // number of uses
     /* 
         discount_users_used không phải để lưu user đã sử dụng. 
