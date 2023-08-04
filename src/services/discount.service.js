@@ -195,6 +195,13 @@ class DiscountService {
         }
     }
 
-    
+    static async deleteDiscountCode ({ shopId, codeId }) {
+        const deleted = await discount.findOneAndDelete({ 
+            discount_code: codeId,
+            discount_shopId: convertToObjectId(shopId)
+        })
+
+        return deleted
+    }
 
 }
