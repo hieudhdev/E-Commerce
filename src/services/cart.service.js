@@ -63,6 +63,17 @@ class CartService {
             return await userCart.save()
         }
 
+        // check cart tồn tại và đã có sản phẩm khác
+        let checkProductAddExistInCart = false
+        userCart.cart_products.forEach( prod => {
+            if (prod.productId === products.productId) {
+                checkProductAddExistInCart = true
+            }
+        })
+        if (!checkProductAddExistInCart) {
+            return await CartService.createUserCart({ userId, products })
+        }
+
         // nếu cart tồn tại và có products này -> update quantity
         return await CartService.updateUserCartQuantity({ userId, products })
     }
@@ -71,7 +82,7 @@ class CartService {
     /*  
         -- UPDATE CART --
         -- BODY or PAYLOAD --
-        shop_orders_ids: [
+        shop_order_ids: [
             {
                 shopId,
                 item_products: [
@@ -87,8 +98,9 @@ class CartService {
             }
         ]
     */
-    static async addToCartV2 (userId, product = {}) {
+    static async addToCartV2 ({ userId, shop_order_ids = [] }) {
         const { productId, quantity, old_quantity } = shop_order_ids[0]?.item_products[0]
+        console.log(productId, quantity, old_quantity)
         // check product
         const foundProduct = await getProductById(productId)
         if (!foundProduct) throw new NotFoundError('Products not exist')
@@ -98,9 +110,13 @@ class CartService {
             throw new NotFoundError('Product do not belong to this shop')
         }
 
+        if (quantity === 0) {
+            // delete product
+        }
+
         return await CartService.updateUserCartQuantity({
             userId,
-            product: {
+            products: {
                 productId,
                 quantity: quantity - old_quantity
             }
@@ -108,9 +124,9 @@ class CartService {
     }
 
     // delete cart or delete cart items
-    static async deleteUserCart ({ userId, productId }) {
+    static async deleteUserCartItem ({ userId, productId }) {
         const query = { 
-            cartUserId: userId, 
+            cart_userId: userId, 
             cart_state: 'active'
         }
         const updateSet = {
@@ -122,13 +138,17 @@ class CartService {
         }
 
         const deleteCart = await cart.updateOne(query, updateSet)
+
+        return deleteCart
     }
 
     // get cart (list products) for user
-    static async getListUserCart ({ userId}) {
+    static async getListUserCart ({ userId }) {
         return await cart.findOne({
-            cart_user: +userId
+            cart_userId: +userId
         }).lean()
     }
 
 }
+
+module.exports = CartService
