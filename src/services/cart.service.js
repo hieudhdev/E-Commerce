@@ -3,6 +3,11 @@
 const cart = require('../models/cart.model')
 const { BabRequestError, NotFoundError } = require('../core/error.response')
 const { getProductById } = require('../models/repositories/product.repo')
+const { 
+    findCartById,
+    createUserCart,
+    updateUserCartQuantity 
+} = require('../models/repositories/cart.repo')
 
 /*
     Key feature: Cart Service
@@ -16,37 +21,6 @@ const { getProductById } = require('../models/repositories/product.repo')
 
 class CartService {
 
-    // START REPO CART
-    static async createUserCart ({ userId, products }) {
-        const query = { cart_userId: userId, cart_state: 'active' }
-        const updateOrInsert = {
-            $addToSet: {
-                cart_products: products
-            }
-        }
-        const options = { upsert: true, new: true }
-
-        return await cart.findOneAndUpdate( query, updateOrInsert, options )
-    }
-
-    static async updateUserCartQuantity ({ userId, products }) {
-        const { productId, quantity } = products
-        const query = { 
-            cart_userId: userId,
-            'cart_products.productId': productId, // nếu truy cập vào property của obj thì cần trong ngoặc ''
-            cart_state: 'active'
-        }
-        const updateSet = {
-            $inc: {
-                'cart_products.$.quantity': quantity
-            }
-        }
-        const options = { upsert: true, new: true }
-
-        return await cart.findOneAndUpdate( query, updateSet, options )
-    }
-    // END REPO CART
-
     // add product to cart
     static async addToCart ({ userId, products = {} }) {
         // check cart exist
@@ -54,7 +28,7 @@ class CartService {
         // nếu có cart rồi thì tìm trong cart có product đấy không ? add new : increase quantity  
         const userCart = await cart.findOne({ cart_userId: userId })
         if (!userCart) {
-            return await CartService.createUserCart({ userId, products })
+            return await createUserCart({ userId, products })
         }
 
         // nếu có cart rồi nhưng chưa có products
@@ -71,11 +45,11 @@ class CartService {
             }
         })
         if (!checkProductAddExistInCart) {
-            return await CartService.createUserCart({ userId, products })
+            return await createUserCart({ userId, products })
         }
 
         // nếu cart tồn tại và có products này -> update quantity
-        return await CartService.updateUserCartQuantity({ userId, products })
+        return await updateUserCartQuantity({ userId, products })
     }
     
     // increase/decrease product in cart
@@ -114,7 +88,7 @@ class CartService {
             // delete product
         }
 
-        return await CartService.updateUserCartQuantity({
+        return await updateUserCartQuantity({
             userId,
             products: {
                 productId,
