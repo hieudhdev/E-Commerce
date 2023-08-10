@@ -140,6 +140,16 @@ class DiscountService {
 
     /*
         Apply discount code
+        products = [
+            {
+                productId,
+                shopId,
+                quantity,
+                name,
+                price
+            },
+            // ... another product
+        ]
     */
     static async getDiscountAmount ({ code, userId, shopId, products }) {
         const foundDiscount = await checkDiscountExists({
