@@ -112,6 +112,12 @@ class CheckoutService {
         }
     }
 
+    static async orderByUser ({
+        
+    }) {
+
+    }
+
 }
 
 module.exports = CheckoutService
