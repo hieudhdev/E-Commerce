@@ -9,6 +9,7 @@ const {
     checkProductByServer 
 } = require('../models/repositories/product.repo')
 const DiscountService = require('./discount.service')
+const { acquireLock, releaseLock } = require('./redis.service')
 
 class CheckoutService {
     
@@ -113,9 +114,38 @@ class CheckoutService {
     }
 
     static async orderByUser ({
-        
+        shop_order_ids, cartId, userId,
+        user_address = {},
+        user_payment = {}
     }) {
+        const { shop_order_ids_new, checkout_order } = await CheckoutService.checkoutReview({
+            cartId, 
+            userId, 
+            shop_order_ids
+        })
 
+        // check ton kho inventories
+        const products = shop_order_ids_new.flatMap( order => order.item_products )
+        console.log(`[1]::`, products )
+        const acquireProduct = []
+        for (let i = 0; i < products.length; i++) {
+            const { productId, quantity } = products[i]
+            const keyLock = await acquireLock(productId, quantity, cartId)
+            acquireProduct.push( keyLock ? true : false )
+
+            if (keyLock) {
+                await releaseLock(keyLock)
+            }
+        }
+
+        // check neu co san pham het hang trong kho
+        if (acquireProduct.includes(false)) {
+            throw new BabRequestError('Some products have been updated, pls return to cart for more details!')
+        }
+
+        const newOrder = await order.create()
+
+        return newOrder
     }
 
 }
