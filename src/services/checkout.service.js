@@ -1,6 +1,7 @@
 'use strict'
 
 const cart = require('../models/cart.model')
+const order = require('../models/order.model')
 const { BabRequestError, NotFoundError } = require('../core/error.response')
 const {
     findCartById
@@ -124,7 +125,7 @@ class CheckoutService {
             shop_order_ids
         })
 
-        // check ton kho inventories
+        // check ton kho inventories (redis + optimistic)
         const products = shop_order_ids_new.flatMap( order => order.item_products )
         console.log(`[1]::`, products )
         const acquireProduct = []
@@ -143,7 +144,15 @@ class CheckoutService {
             throw new BabRequestError('Some products have been updated, pls return to cart for more details!')
         }
 
-        const newOrder = await order.create()
+        const newOrder = await order.create({
+            order_userId: userId,
+            order_checkout: checkout_order,
+            order_shipping: user_address,
+            order_payment: user_payment,
+            order_products: shop_order_ids_new,
+            // order_trackingNumber: '',
+            // order_state: ''
+        })
 
         return newOrder
     }
