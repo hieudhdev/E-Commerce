@@ -41,5 +41,6 @@ const reservationInventory = async ({ productId, quantity, cardId }) => {
 }
 
 module.exports = {
-    insertInventory
+    insertInventory,
+    reservationInventory
 }
