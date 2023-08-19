@@ -154,7 +154,33 @@ class CheckoutService {
             // order_state: ''
         })
 
+        // neu insert thanh cong thi remove product trong cart
+        if (newOrder) {
+            // remove products in cart
+        }
+
         return newOrder
+    }
+
+    
+    // 1 - query all orders [User]
+    static async getOrdersByUser() {
+
+    }
+
+    // 2 - query an orders [User]
+    static async getOneOrderByUser() {
+
+    }
+
+    // 3 - cancel order [User]
+    static async cancelOrderByUser() {
+
+    }
+
+    // 4 - update orders status [Shop|Admin] - level pro
+    static async updateOrderStatusByShop() {
+
     }
 
 }
