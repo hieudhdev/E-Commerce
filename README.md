@@ -1,7 +1,7 @@
-# Overview project
+## Overview project
 - This project is a simple RESTful API application about eCommerce
 - A use case of Clean Architecture in Node.js comprising of Nodejs - Express.js, MongoDB as the main (but replaceable) infrastructure.
-# Note list (Todos list)
+## Note list (Todos list)
 - Init project structure, folder and packages
 - Database connect MongoDb - Singleton Pattern
 - .env config (mongodb.config) for [dev/prod] environment
