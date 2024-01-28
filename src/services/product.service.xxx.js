@@ -3,6 +3,7 @@
 const { product, electronic, clothing, furniture } = require('../models/product.model')
 const { AuthFailureError, NotFoundError, BabRequestError } = require('../core/error.response')
 const { removeUndefinedObject, updateNestedObjectParser } = require('../utils')
+const NotificationService = require('./notification.service')
 const { 
     findAllDraftsForShop, 
     findAllPublishForShop,
@@ -112,6 +113,18 @@ class Product {
                 stock: this.product_quantity
             })
         }
+
+        // push noti to system collection
+        const notiPush = await NotificationService.pushNotiToSystem({
+            type: 'SHOP-001',
+            receivedId: 1,    // temporary user receive
+            senderId: this.product_shop,
+            options: {
+                product_name: this.product_name,
+                shop_name: this.product_shop
+            }
+        })
+        console.log(notiPush)
 
         return newProduct;
     }
