@@ -8,7 +8,7 @@ const { findProduct } = require('../models/repositories/product.repo')
 /*
     Key service: ConmentService
     + add comment [User/Shop]
-    + get a list of comment [User/Shop/Guess]
+    + get a list of comment [User/Shop/Guest]
     + delete a comment [User/Shop/Admin]
 */
 // NOTE: NESTED COMMENT ?????
