@@ -15,6 +15,7 @@
   "author": "hieudh",
   "license": "ISC",
   "dependencies": {
+    "amqplib": "^0.10.3",
     "bcrypt": "^5.1.0",
     "crypto": "^1.0.1",
     "dotenv": "^16.3.1",
