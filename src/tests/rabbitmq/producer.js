@@ -1,6 +1,6 @@
 const amqp = require('amqplib');
 
-const message = 'Hello rabbitmq'
+const message = 'Hello rabbitmq test sys MQ'
 const channelName = 'test_rabbitmq'
 
 const runProducer = async () => {
@@ -15,6 +15,11 @@ const runProducer = async () => {
         //send messages to Comsumer channel
         channel.sendToQueue(channelName, Buffer.from(message))
         console.log(`message send::`, message)
+
+        setTimeout(() => {
+            connect.close();
+            process.exit(0)
+        }, 500)
 
     } catch (err) {
         console.error(err)
