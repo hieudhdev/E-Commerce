@@ -1,7 +1,7 @@
 'use strict'
 
-const { convertToObjectId } = require('../../utils')
-const inventory = require('../inventory.model')
+const { convertToObjectId } = require('../helpers')
+const inventory = require('../models/inventory.model')
 const { Types } = require('mongoose')
 
 const insertInventory = async ({

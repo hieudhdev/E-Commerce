@@ -1,8 +1,8 @@
 'use strict'
 
 const { product, electronic, clothing, furniture } = require('../models/product.model')
-const { AuthFailureError, NotFoundError, BabRequestError } = require('../core/error.response')
-const { removeUndefinedObject, updateNestedObjectParser } = require('../utils')
+const { AuthFailureError, NotFoundError, BabRequestError } = require('../helpers/error.response')
+const { removeUndefinedObject, updateNestedObjectParser } = require('../helpers')
 const NotificationService = require('./notification.service')
 const { 
     findAllDraftsForShop, 
@@ -13,11 +13,11 @@ const {
     findAllProducts,
     findProduct,
     updateProductById
-} = require('../models/repositories/product.repo')
+} = require('../repositories/product.repo')
 
 const { 
     insertInventory 
-} = require('../models/repositories/inventory.repo')
+} = require('../repositories/inventory.repo')
 
 // define Factory class to create a product (FACTORY DESIGN METHOD)
 class ProductFactory {

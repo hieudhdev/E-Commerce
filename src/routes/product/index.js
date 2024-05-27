@@ -3,8 +3,8 @@
 const express = require('express')
 const router = express.Router()
 const productController = require('../../controllers/product.controller')
-const { asyncHandler } = require('../../auth/checkAuth')
-const { authentication, authenticationV2 } = require('../../auth/authUtils')
+const { asyncHandler } = require('../../middlewares/checkAuth')
+const { authentication, authenticationV2 } = require('../../middlewares/authUtils')
 
 // service for all users
 router.get('/search/:keySearch', asyncHandler( productController.getListSearchProduct ))
