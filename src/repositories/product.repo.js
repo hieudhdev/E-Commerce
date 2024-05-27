@@ -1,8 +1,8 @@
 'use strict'
 
-const { product, electronic, clothing, furniture } = require('../product.model')
+const { product, electronic, clothing, furniture } = require('../models/product.model')
 const { Types } = require('mongoose')
-const { getSelectData, unGetSelectData, convertToObjectId } = require('../../utils')
+const { getSelectData, unGetSelectData, convertToObjectId } = require('../helpers')
 
 const findAllDraftsForShop = async ({ query, limit, skip }) => {
     return await queryProduct({ query, limit, skip })

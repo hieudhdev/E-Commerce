@@ -1,7 +1,7 @@
 'use strict'
 
 const AccessService = require("../services/access.service");
-const { SuccessResponse, OK, CREATED } = require("../core/success.response")
+const { SuccessResponse, OK, CREATED } = require("../helpers/success.response")
 
 class AccessController {
 

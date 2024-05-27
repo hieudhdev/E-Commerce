@@ -1,7 +1,7 @@
 'use strict'
 
 const mongoose = require('mongoose')
-const { db: {host, port, name} } = require('../configs/config.mongodb')
+const { db: {host, port, name} } = require('./config.mongodb')
 const connectStr = `mongodb://${host}:${port}/${name}`
 
 // SINGLETON PATTERN CONNECT DATABASES

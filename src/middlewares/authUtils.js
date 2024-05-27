@@ -2,7 +2,7 @@
 
 const JWT = require('jsonwebtoken')
 const asyncHandler = require('../helpers/asyncHandler')
-const { AuthFailureError, NotFoundError } = require('../core/error.response')
+const { AuthFailureError, NotFoundError } = require('../helpers/error.response')
 
 // service
 const KeyTokenService = require('../services/keyToken.service')

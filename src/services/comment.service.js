@@ -1,9 +1,9 @@
 'use strict'
 
-const { NotFoundError } = require('../core/error.response')
+const { NotFoundError } = require('../helpers/error.response')
 const Comment = require('../models/comment.model')
-const { convertToObjectId } = require('../utils')
-const { findProduct } = require('../models/repositories/product.repo')
+const { convertToObjectId } = require('../helpers')
+const { findProduct } = require('../repositories/product.repo')
 
 /*
     Key service: ConmentService

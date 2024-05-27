@@ -4,14 +4,14 @@ const discount = require('../models/discount.model')
 const { 
     BabRequestError,
     NotFoundError
-} = require('../core/error.response')
-const { convertToObjectId } = require('../utils/index')
-const { findAllProducts } = require('../models/repositories/product.repo')
+} = require('../helpers/error.response')
+const { convertToObjectId } = require('../helpers/index')
+const { findAllProducts } = require('../repositories/product.repo')
 const { 
     findAllDiscountCodesSelect,
     findAllDiscountCodesUnSelect,
     checkDiscountExists
-} = require('../models/repositories/discount.repo')
+} = require('../repositories/discount.repo')
 
 /*
     Discount service

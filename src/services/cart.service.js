@@ -1,13 +1,13 @@
 'use strict'
 
 const cart = require('../models/cart.model')
-const { BabRequestError, NotFoundError } = require('../core/error.response')
-const { getProductById } = require('../models/repositories/product.repo')
+const { BabRequestError, NotFoundError } = require('../helpers/error.response')
+const { getProductById } = require('../repositories/product.repo')
 const { 
     findCartById,
     createUserCart,
     updateUserCartQuantity 
-} = require('../models/repositories/cart.repo')
+} = require('../repositories/cart.repo')
 
 /*
     Key feature: Cart Service

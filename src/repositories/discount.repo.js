@@ -1,7 +1,7 @@
 'use strict'
 
-const discount = require('../discount.model')
-const { getSelectData, unGetSelectData } = require('../../utils/index')
+const discount = require('../models/discount.model')
+const { getSelectData, unGetSelectData } = require('../helpers/index')
 
 const findAllDiscountCodesUnSelect = async ({
     limit = 50, page = 1, sort = 'ctime', filter, unSelect, model 
