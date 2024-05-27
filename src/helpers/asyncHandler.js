@@ -5,4 +5,6 @@ const asyncHandler = fn => {
     }
 }
 
+const test = 'abc';
+
 module.exports = asyncHandler
