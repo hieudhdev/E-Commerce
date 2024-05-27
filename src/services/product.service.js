@@ -1,7 +1,7 @@
 'use strict'
 
 const { product, electronic, clothing } = require('../models/product.model')
-const { AuthFailureError, NotFoundError, BabRequestError } = require('../core/error.response')
+const { AuthFailureError, NotFoundError, BabRequestError } = require('../helpers/error.response')
 
 // define Factory class to create a product (FACTORY DESIGN METHOD)
 class ProductFactory {

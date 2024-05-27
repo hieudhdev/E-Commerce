@@ -1,8 +1,8 @@
 'use strict'
 
 const inventory = require('../models/inventory.model')
-const { BabRequestError } = require('../core/error.response')
-const { getProductById } = require('../models/repositories/product.repo')
+const { BabRequestError } = require('../helpers/error.response')
+const { getProductById } = require('../repositories/product.repo')
 
 class InventoryService {
     

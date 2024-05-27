@@ -4,10 +4,10 @@ const shopModel = require('../models/shop.model')
 const crypto = require("node:crypto")
 const bcrypt = require('bcrypt')
 const KeyTokenService = require('./keyToken.service')
-const { createTokenPair, verifyJWT } = require('../auth/authUtils')
-const { getInfoData } = require('../utils')
+const { createTokenPair, verifyJWT } = require('../middlewares/authUtils')
+const { getInfoData } = require('../helpers')
 const saltRounds = 10
-const { BabRequestError, AuthFailureError, ForbiddenError } = require('../core/error.response')
+const { BabRequestError, AuthFailureError, ForbiddenError } = require('../helpers/error.response')
 
 // service
 const { findByEmail } = require('./shop.service')

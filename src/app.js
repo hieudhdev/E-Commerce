@@ -13,7 +13,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended : true }))
 
 // init db
-require('./databases/init.mongodb')
+require('./configs/init.mongodb')
 const { countConnect, checkOverLoad } = require('./helpers/check.connect')
 // countConnect()
 // checkOverLoad()

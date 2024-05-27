@@ -1,7 +1,7 @@
 'use strict'
 
 const express = require('express')
-const { apiKey, permissions } = require('../auth/checkAuth')
+const { apiKey, permissions } = require('../middlewares/checkAuth')
 const router = express.Router()
 
 // check apiKey

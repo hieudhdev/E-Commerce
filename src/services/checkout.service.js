@@ -2,13 +2,13 @@
 
 const cart = require('../models/cart.model')
 const order = require('../models/order.model')
-const { BabRequestError, NotFoundError } = require('../core/error.response')
+const { BabRequestError, NotFoundError } = require('../helpers/error.response')
 const {
     findCartById
-} = require('../models/repositories/cart.repo')
+} = require('../repositories/cart.repo')
 const { 
     checkProductByServer 
-} = require('../models/repositories/product.repo')
+} = require('../repositories/product.repo')
 const DiscountService = require('./discount.service')
 const { acquireLock, releaseLock } = require('./redis.service')
 
