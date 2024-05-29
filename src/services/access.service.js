@@ -115,7 +115,7 @@ class AccessService {
         if (!foundShop) throw new BabRequestError('Error: shop is not registered!')
         
         // 2 - match password
-        const matchPassword = bcrypt.compare(password, foundShop.password)
+        const matchPassword = await bcrypt.compare(password, foundShop.password)
         if (!matchPassword) throw new AuthFailureError('Error: password is incorrect!')
 
         // 3 - create AT, RT and save
