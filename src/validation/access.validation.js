@@ -1,21 +1,26 @@
 'use strict'
 
 const Joi = require('joi')
+const {StringJoiMessages} = require('../helpers/customJoiMessage')
 
 // sign up
-const userSignupSchema = Joi.object({
-    name: Joi.string().min(6).max(30).required(),
-    email: Joi.string().email().required(),
-    password: Joi.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')).required()
-})
+const userSignup = {
+    body: Joi.object().keys({
+        name: Joi.string().min(6).max(30).required().messages(StringJoiMessages),
+        email: Joi.string().email().required().messages(StringJoiMessages),
+        password: Joi.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')).required().messages(StringJoiMessages)
+    })
+}
 
 // login
-const userLoginSchema = Joi.object({
-    email: Joi.string().email().required(),
-    password: Joi.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')).required()
-})
+const userLogin = {
+    body: Joi.object().keys({
+        email: Joi.string().email().required().messages(StringJoiMessages),
+        password: Joi.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')).required().messages(StringJoiMessages)
+    })
+}
 
 module.exports = {
-    userSignupSchema,
-    userLoginSchema
+    userSignup,
+    userLogin
 }
