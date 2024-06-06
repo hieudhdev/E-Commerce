@@ -1,16 +1,12 @@
 'use strict'
 
 const AccessService = require("../services/access.service");
-const { SuccessResponse, OK, CREATED } = require("../core/success.response")
+const { SuccessResponse, OK, CREATED } = require("../helpers/success.response")
+const { BabRequestError } = require('../helpers/error.response')
 
 class AccessController {
 
     handlerRefreshToken = async (req, res, next) => {
-        // new SuccessResponse ({
-        //     message: "Get token success!",
-        //     metadata: await AccessService.handlerRefeshToken( req.body.refreshToken )
-        // }).send(res)
-
         // v2 authentication fixed
         new SuccessResponse ({
             message: "Get token success!",
@@ -23,6 +19,7 @@ class AccessController {
     }
 
     logout = async (req, res, next) => {
+        console.log(req.keyStore)
         new SuccessResponse ({
             message: "Logout success!",
             metadata: await AccessService.logout( req.keyStore ) // keyStore da truyen len req trong authentication middleware

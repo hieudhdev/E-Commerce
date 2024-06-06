@@ -1,7 +1,7 @@
 'use strict'
 
-const cart = require('../cart.model')
-const { convertToObjectId } = require('../../utils')
+const cart = require('../models/cart.model')
+const { convertToObjectId } = require('../helpers')
 
 const findCartById = async (cartId) => {
     return await cart.findOne({ 

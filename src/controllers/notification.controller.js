@@ -1,7 +1,7 @@
 'use strict'
 
 const NotificationService = require('../services/notification.service')
-const { SuccessResponse, OK, CREATED } = require("../core/success.response")
+const { SuccessResponse, OK, CREATED } = require("../helpers/success.response")
 
 class NotificationController {
 

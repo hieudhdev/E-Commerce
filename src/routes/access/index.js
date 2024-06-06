@@ -3,14 +3,16 @@
 const express = require('express')
 const router = express.Router()
 const accessController = require('../../controllers/access.controller')
-const { asyncHandler } = require('../../auth/checkAuth')
-const { authentication, authenticationV2 } = require('../../auth/authUtils')
+const { asyncHandler } = require('../../middlewares/checkAuth')
+const { authentication, authenticationV2 } = require('../../middlewares/authUtils')
+const validate = require('../../middlewares/validate')
+const accessValidation = require('../../validation/access.validation')
 
 // sign up
-router.post('/shop/signup', asyncHandler( accessController.signUp ))
+router.post('/shop/signup', validate(accessValidation.userSignup), asyncHandler( accessController.signUp ))
 
 // login
-router.post('/shop/login', asyncHandler( accessController.login ))
+router.post('/shop/login', validate(accessValidation.userLogin), asyncHandler( accessController.login ))
 
 // authentication middleware
 router.use(authenticationV2)
